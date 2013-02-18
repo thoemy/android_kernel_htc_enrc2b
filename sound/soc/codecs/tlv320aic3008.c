@@ -882,9 +882,6 @@ static void dump_dspindex()
     }
 }
 
-/* this is the default dspindex for the HOX+
-this is dependent on /system/etc/soundimages!!!! 
-ICS audio driver are not calling AIC3008_IO_SET_DSP_INDEX */
 static void init_default_dspindex()
 {
     aic3008_dspindex[0] = 1;
@@ -1027,7 +1024,7 @@ static int aic3008_set_config(int config_tbl, int idx, int en)
 		}
 		break;
 	case AIC3008_IO_CONFIG_MEDIA:
-        /* thats actually a noop when using ICS drivers */
+        // maxwen TODO
 		if(idx == 20)
 		{
 			mutex_unlock(&lock);
@@ -1169,7 +1166,7 @@ static int aic3008_set_config(int config_tbl, int idx, int en)
 
 		/* i2s config */
 		if (aic3008_power_ctl->i2s_switch) {
-			// maxwen
+			// maxwen TODO
 			if (!dspindex_init_done){
             	init_default_dspindex();
 				dump_dspindex();
@@ -1183,7 +1180,7 @@ static int aic3008_set_config(int config_tbl, int idx, int en)
 				aic3008_power_ctl->i2s_control(aic3008_dspindex[idx]);
 			} else {
 			    AUD_ERR("[DSP] AIC3008_IO_CONFIG_MEDIA: unknown dsp index %d\n", idx);
-			}
+                        }
 		}
 
 		if (aic3008_minidsp == NULL) {
@@ -1374,7 +1371,8 @@ static long aic3008_ioctl(struct file *file, unsigned int cmd,
 		break;
 
 	/* third io command from HAL */
-    case AIC3008_IO_SET_DSP_PARAM_ICS:
+	// maxwen TODO
+    case 0x40047320:
 	case AIC3008_IO_SET_DSP_PARAM:
 	    AUD_INFO("AIC3008_IO_SET_DSP_PARAM\n");
 		if (copy_from_user(&para, (void *) argc, sizeof(para))) {
@@ -1410,7 +1408,6 @@ static long aic3008_ioctl(struct file *file, unsigned int cmd,
 		break;
 
 	/* fourth io command from HAL */
-	/* this is NOT called from the ICS audio drivers on HOX+ */
 	case AIC3008_IO_SET_DSP_INDEX:
 	    AUD_INFO("AIC3008_IO_SET_DSP_INDEX\n");
 		if (copy_from_user(&para, (void *) argc, sizeof(para))) {
