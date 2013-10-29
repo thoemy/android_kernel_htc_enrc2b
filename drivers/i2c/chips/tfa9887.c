@@ -300,7 +300,6 @@ static int tfa9887_i2c_write(char *txData, int length)
 				__func__, i, txData[i]);
 	}
 #endif
-
 	return 0;
 }
 
@@ -327,6 +326,7 @@ static int tfa9887_i2c_read(char *rxData, int length)
 		return rc;
 	}
 
+#if 0
 #if AUDIO_DEBUG
 	{
 		int i = 0;
@@ -335,7 +335,7 @@ static int tfa9887_i2c_read(char *rxData, int length)
 				rxData[i]);
 	}
 #endif
-
+#endif
 	return 0;
 }
 
